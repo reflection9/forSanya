@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+
+.content {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #ffd5e5, #fdffcb);
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.content h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #ff6f61;
+    text-shadow: 1px 1px #fff;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.catalog-item {
+    background-color: #ffffff;
+    border: 4px solid #000000;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.catalog-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.catalog-item img {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+}
+
+.catalog-details {
+    text-align: center;
+}
+
+.catalog-title {
+    font-size: 1.0rem;
+    color: #000000;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px #fff;
+}
