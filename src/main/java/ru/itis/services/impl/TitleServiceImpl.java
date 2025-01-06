@@ -1,5 +1,6 @@
 package ru.itis.services.impl;
 
+import ru.itis.helper.ReadingStatus;
 import ru.itis.models.Genre;
 import ru.itis.models.Title;
 import ru.itis.repositories.FileRepository;
@@ -55,6 +56,11 @@ public class TitleServiceImpl implements TitleService {
     @Override
     public Optional<Title> getTitleById(Long id) {
         return titleRepository.findById(id);
+    }
+
+    @Override
+    public List<Title> getTitlesByUserAndStatus(Long userId, ReadingStatus status) {
+        return titleRepository.findTitlesByUserAndStatus(userId, status);
     }
 
 }

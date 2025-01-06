@@ -20,15 +20,19 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         AuthorRepository authorRepository = new AuthorRepositoryJdbcImpl();
         CommentRepository commentRepository = new CommentRepositoryJdbcImpl();
         FileRepository fileRepository = new FileRepositoryJdbcImpl();
+        UserTitleRepository userTitleRepository = new UserTitleRepositoryImpl();
+        RatingRepository ratingRepository = new RatingRepositoryJbdcImpl();
 
 
-        UserService userService = new UserServiceImpl(userRepository);
+
+        UserService userService = new UserServiceImpl(userRepository,userTitleRepository);
         TitleService titleService = new TitleServiceImpl(titleRepository, genreRepository, fileRepository);
         GenreService genreService = new GenreServiceImpl(genreRepository);
-        ChapterService chapterService = new ChapterServiceImpl(chapterRepository, fileRepository);
+        ChapterService chapterService = new ChapterServiceImpl(chapterRepository);
         AuthorService authorService = new AuthorServiceImpl(authorRepository);
         FileService fileService = new FileServiceImpl(fileRepository);
         CommentService commentService = new CommentServiceImpl(commentRepository);
+        RatingService ratingService = new RatingServiceImpl(ratingRepository);
 
 
         sce.getServletContext().setAttribute("userService", userService);
@@ -38,6 +42,7 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
         sce.getServletContext().setAttribute("authorService", authorService);
         sce.getServletContext().setAttribute("fileService", fileService);
         sce.getServletContext().setAttribute("commentService", commentService);
+        sce.getServletContext().setAttribute("ratingService", ratingService);
     }
 
     @Override

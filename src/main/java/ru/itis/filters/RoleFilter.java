@@ -1,6 +1,6 @@
 package ru.itis.filters;
 
-import ru.itis.dtos.UserDto;
+import ru.itis.dto.UserDto;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

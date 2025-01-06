@@ -6,14 +6,13 @@ import ru.itis.repositories.FileRepository;
 import ru.itis.services.ChapterService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ChapterServiceImpl implements ChapterService {
     private final ChapterRepository chapterRepository;
-    private final FileRepository fileRepository;
 
-    public ChapterServiceImpl(ChapterRepository chapterRepository, FileRepository fileRepository) {
+    public ChapterServiceImpl(ChapterRepository chapterRepository) {
         this.chapterRepository = chapterRepository;
-        this.fileRepository = fileRepository;
     }
 
     @Override
@@ -29,5 +28,15 @@ public class ChapterServiceImpl implements ChapterService {
     @Override
     public void deleteChapter(Long id) {
         chapterRepository.removeById(id);
+    }
+
+    @Override
+    public List<Chapter> findByTitleId(Long titleId) {
+        return chapterRepository.findByTitleId(titleId);
+    }
+
+    @Override
+    public Optional<Chapter> findById(Long id) {
+        return Optional.empty();
     }
 }

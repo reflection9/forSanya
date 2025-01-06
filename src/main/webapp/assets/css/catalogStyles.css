@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
 
+body {
+    padding: 0;
+    font-family: Montserrat, sans-serif;
+    margin: 0;
+}
+
 .content {
-    padding-top: 60px;
+    padding-top: 70px;
     padding-bottom: 40px;
     font-family: 'Montserrat', sans-serif;
-    background: linear-gradient(135deg, #ffd5e5, #fdffcb);
+    background: linear-gradient(135deg, #f0f4f8, #ffffff);
     min-height: 100vh;
 }
 
@@ -18,8 +24,8 @@
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 30px;
-    color: #ff6f61;
-    text-shadow: 1px 1px #fff;
+    color: #2c3e50;
+    text-shadow: 1px 1px #ffffff;
 }
 
 .catalog-grid {
@@ -30,7 +36,7 @@
 
 .catalog-item {
     background-color: #ffffff;
-    border: 4px solid #000000;
+    border: 4px solid #000;
     border-radius: 8px;
     position: relative;
     overflow: hidden;
@@ -39,7 +45,7 @@
 
 .catalog-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
 .catalog-item img {
@@ -54,7 +60,68 @@
 
 .catalog-title {
     font-size: 1.0rem;
-    color: #000000;
+    color: #333333;
     margin-bottom: 10px;
-    text-shadow: 1px 1px #fff;
+    margin-top: 5px;
+    text-shadow: 1px 1px #ffffff;
+}
+.container label{
+    color: #000000;
+}
+.search-sort-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-sort-container .filter-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 200px;
+}
+
+.search-sort-container .form-control {
+    padding: 10px 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #333333;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-sort-container .form-control:hover,
+.search-sort-container .form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+    outline: none;
+}
+
+.search-sort-container label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.search-sort-container .btn {
+    flex: 1 1 100%;
+    text-align: center;
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-sort-container .btn:hover {
+    background-color: #2980b9;
 }

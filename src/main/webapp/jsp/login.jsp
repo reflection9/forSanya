@@ -11,7 +11,7 @@
         html, body {
             height: 100%;
             font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #b92b27,#1565C0);
+            background: linear-gradient(135deg, #abbaab,#ffffff);
         }
 
         body {
@@ -34,7 +34,7 @@
             font-size: 2rem;
             margin-bottom: 1.5rem;
             color: #000;
-            text-shadow: 2px 2px #fcbf49;
+            text-shadow: 2px 2px #abbaab;
         }
 
         form {
@@ -68,14 +68,14 @@
         button {
             font-size: 1.2rem;
             padding: 0.5rem;
-            background-color: #fcbf49;
+            background-color: #abbaab;
             border: 3px solid #000;
             cursor: pointer;
             transition: transform 0.2s ease;
         }
 
         button:hover {
-            background-color: #ffd670;
+            background-color: #abbaab;
             transform: scale(1.05);
         }
 
@@ -107,7 +107,7 @@
         <label for="password">Пароль:</label>
         <input id="password" type="password" name="password" required>
 
-        <button type="submit">ВОЙТИ!</button>
+        <button type="submit">Войти!</button>
     </form>
     <p>Нет аккаунта? <a href="/register">Зарегистрируйтесь!</a></p>
 

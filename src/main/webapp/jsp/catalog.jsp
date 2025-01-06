@@ -18,27 +18,39 @@
     <div class="content">
         <div class="container">
             <div class="search-sort-container">
-                <input type="text" id="search" placeholder="Поиск по названию" class="form-control"><br>
-                <label for="type">Жанр:</label>
-                <select id="genre" class="form-control">
-                    <option value="">Все жанры</option>
-                    <c:forEach var="genre" items="${genres}">
-                        <option value="${genre.id}">${genre.name}</option>
-                    </c:forEach>
-                </select><br>
-                <label for="type">Автор:</label>
-                <select id="author" class="form-control">
-                    <option value="">Все авторы</option>
-                    <c:forEach var="author" items="${authors}">
-                        <option value="${author.id}">${author.name}</option>
-                    </c:forEach>
-                </select><br>
-                <label for="type">Тип:</label>
-                <select id="type" class="form-control">
-                    <option value="">Все типы</option>
-                    <option value="manga">Манга</option>
-                    <option value="comic">Комикс</option>
-                </select><br>
+                <div class="filter-group">
+                    <label for="search">Поиск по названию</label>
+                    <input type="text" id="search" placeholder="Поиск по названию" class="form-control">
+                </div>
+
+                <div class="filter-group">
+                    <label for="genre">Жанр:</label>
+                    <select id="genre" class="form-control">
+                        <option value="">Все жанры</option>
+                        <c:forEach var="genre" items="${genres}">
+                            <option value="${genre.id}">${genre.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="author">Автор:</label>
+                    <select id="author" class="form-control">
+                        <option value="">Все авторы</option>
+                        <c:forEach var="author" items="${authors}">
+                            <option value="${author.id}">${author.name}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="type">Тип:</label>
+                    <select id="type" class="form-control">
+                        <option value="">Все типы</option>
+                        <option value="manga">Манга</option>
+                        <option value="comic">Комикс</option>
+                    </select>
+                </div>
             </div>
 
             <div id="catalog-grid" class="catalog-grid">
@@ -46,8 +58,8 @@
                     <div class="catalog-item">
                         <a href="/title?titleId=${title.id}">
                             <c:choose>
-                                <c:when test="${not empty title.files}">
-                                    <img src="${title.files[0].filePath}" alt="Обложка ${title.name}">
+                                <c:when test="${not empty title.files}" >
+                                    <img src="${title.files[0].filePath}" alt="Обложка ${title.name}" loading="lazy" >
                                 </c:when>
                                 <c:otherwise>
                                     <img src="/uploads/placeholder.png" alt="Нет обложки">

@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap');
+
 body {
-    background: linear-gradient(135deg, #232526, #414345);
-    margin-left:20px;
+    background: linear-gradient(135deg, #f0f4f8, #ffffff);
     padding: 0;
     font-family: Montserrat, sans-serif;
+    margin: 0;
 }
-
 
 .title-hero {
     position: relative;
@@ -17,39 +17,15 @@ body {
     background-size: cover;
     display: flex;
     align-items: flex-end;
+    background-color: #f0f4f8;
 }
 
-.status-options {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    margin-top: 10px;
-}
-.status-button {
-    margin-top: 10px;
-    padding: 8px 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.status-button:hover {
-    background-color: #45a049;
-}
-.comment {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-}
 .title-hero-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 20%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.8));
     z-index: 1;
 }
-
 
 .title-hero-content {
     position: relative;
@@ -62,146 +38,278 @@ body {
     padding: 20px 0;
 }
 
-/* Обложка */
 .title-cover {
     width: 200px;
     min-width: 200px;
     margin-right: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
 .title-cover img {
     width: 100%;
     display: block;
     border-radius: 4px;
 }
 
-/* Инфа о тайтле (справа) */
 .title-info {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    max-width: 800px; /* или другое ограничение */
+    max-width: 800px;
 }
 
-/* Название тайтла */
 .title-name {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: bold;
     margin: 0 0 10px;
-    color: #fff;
+    color: #2c3e50;
 }
 
-
-/* Статус чтения */
 .reading-status {
     margin-bottom: 20px;
     display: flex;
     align-items: center;
 }
+
 .reading-status label {
     margin-right: 10px;
-    color: #ccc;
+    color: #333333;
+    font-weight: 500;
 }
+
 .reading-status select {
-    background-color: #2a2a2a;
-    color: #fff;
-    border: 1px solid #555;
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #bdc3c7;
     border-radius: 4px;
-    padding: 6px 12px;
+    padding: 8px 30px 8px 12px;
     font-size: 1rem;
     outline: none;
     cursor: pointer;
-}
-.reading-status select option {
-    background-color: #2a2a2a;
-}
-.reading-status select .hover{
-    background-color: #fcbf49;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5"><polygon points="0,0 10,0 5,5" fill="%23333333"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 10px 5px;
 }
 
-/* Вкладки (О тайтле, Главы, Комментарии, Отзывы) */
+.reading-status select:hover {
+    border-color: #3498db;
+}
+
+.reading-status button {
+    margin-left: 15px;
+    padding: 8px 16px;
+    background-color: #3498db;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.reading-status button:hover {
+    background-color: #2980b9;
+}
+
 .title-tabs {
     width: 90%;
-    margin: 20px auto;
+    margin: 20px 50px;
     background-color: transparent;
 }
+
 .title-tabs ul {
     list-style: none;
     display: flex;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #bdc3c7;
     padding: 0;
     margin: 0;
-    color: #ffffff;
+    color: #333333;
 }
+
 .title-tabs ul li {
     padding: 10px 15px;
-    color: #ffffff;
+    color: #333333;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: color 0.3s, border-bottom 0.3s;
     text-align: center;
 }
+
 .title-tabs ul li:hover {
-    color: #fff;
+    color: #3498db;
 }
+
 .title-tabs ul li.active {
-    color: #ffa500;
-    border-bottom: 2px solid #ffa500;
+    color: #3498db;
+    border-bottom: 2px solid #3498db;
 }
+
 .tab-content {
     display: none;
-    padding: 20px 15px; /* Добавляем отступы */
-    box-sizing: border-box; /* Гарантируем, что отступы не увеличивают ширину */
+    padding: 20px 15px 10px;
+    box-sizing: border-box;
     width: 90%;
+}
+
+.tab-content p{
+    margin-left: 40px;
+    color: #333333;
 }
 
 .tab-content.active {
     display: block;
 }
-.comment {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    margin-left: 40px;
 }
 
-/* Основной блок с деталями */
+.comment-form textarea {
+    resize: vertical;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.comment-form textarea::placeholder {
+    color: #757575;
+}
+
+.comment-form button {
+    align-self: flex-end;
+    padding: 8px 16px;
+    background-color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.comment-form button:hover {
+    background-color: #c0392b;
+}
+
+.comment {
+    background-color: #ecf0f1;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 40px;
+    border: 1px solid #bdc3c7;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-header .username {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-left: 20px;
+}
+
+.comment-header .comment-date {
+    font-size: 0.85rem;
+    color: #757575;
+    margin-left: 20px;
+}
+
+.comment-content {
+    color: #333333;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
 .title-details-container {
     width: 90%;
     margin: 20px auto 40px;
-    background-color: #2a2a2a;
+    background-color: #ffffff;
     border-radius: 6px;
     padding: 20px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* Описание */
 .title-description {
     margin-bottom: 20px;
     font-size: 1rem;
     line-height: 1.6;
-    color: #fff;
+    color: #333333;
 }
 
-/* Жанры */
 .title-genres {
+    margin-left: 40px;
     margin-bottom: 20px;
 }
+
 .genre-tag {
     display: inline-block;
-    background-color: #3a3a3a;
-    color: #fff;
+    background-color: #1abc9c;
+    color: #ffffff;
     padding: 5px 10px;
     border-radius: 4px;
     font-size: 0.9rem;
     margin: 0 5px 5px 0;
 }
 
-/* Автор */
+.author-tag{
+    display: inline-block;
+    background-color: #1abc9c;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin: 0 5px 5px 40px;
+}
+
 .title-author {
     font-size: 1rem;
-    color: #bbb;
+    color: #333333;
 }
+
 .title-author span {
     color: #fff;
 }
+.rating-section {
+    text-align: center;
+    margin: 20px 40px 20px auto;
+}
 
+.stars {
+    display: inline-block;
+}
+
+.star {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin: 0 2px;
+}
+
+.star:hover,
+.star.hovered,
+.star.selected {
+    color: #f5b301;
+}
+
+
+p {
+    color: #333333;
+}

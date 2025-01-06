@@ -1,4 +1,4 @@
-package ru.itis.dtos;
+package ru.itis.dto;
 
 import lombok.*;
 

@@ -1,6 +1,6 @@
 package ru.itis.servlets;
 
-import ru.itis.dtos.UserDto;
+import ru.itis.dto.UserDto;
 import ru.itis.models.User;
 import ru.itis.services.UserService;
 

@@ -34,7 +34,7 @@ body {
 
 .sidebar a:hover {
     background-color: #ffece9;
-    color: #ff6f61;
+    color: #1abc9c;
 }
 
 .sidebar a i {
@@ -48,7 +48,7 @@ body {
     left: 200px;
     right: 0;
     height: 60px;
-    background-color: #ff6f61;
+    background-color: #1abc9c;
     display: flex;
     align-items: center;
     padding-left: 20px;
@@ -84,7 +84,7 @@ body {
 
 .container h2 {
     font-family: 'Roboto', sans-serif;
-    color: #ff6f61;
+    color: #1abc9c;
     margin-top: 30px;
     margin-bottom: 15px;
     font-size: 1.2rem;
@@ -104,7 +104,7 @@ body {
 }
 
 .table th {
-    background-color: #ff6f61;
+    background-color: #1abc9c;
     color: #ffffff;
 }
 

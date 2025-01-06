@@ -2,7 +2,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <c:forEach var="title" items="${titles}">
     <div class="catalog-item">
-        <a href="/title?id=${title.id}">
+        <a href="/title?titleId=${title.id}">
             <c:choose>
                 <c:when test="${not empty title.files}">
                     <img src="${title.files[0].filePath}" alt="Обложка ${title.name}">
@@ -17,3 +17,11 @@
         </a>
     </div>
 </c:forEach>
+<script>
+    document.querySelectorAll('.catalog-title').forEach(title => {
+        const maxLength = 25;
+        if (title.textContent.length > maxLength) {
+            title.textContent = title.textContent.substring(0, maxLength) + '...';
+        }
+    });
+</script>

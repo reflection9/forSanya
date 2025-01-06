@@ -1,6 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="includes/header.jsp" %>
 <!DOCTYPE html>
 <html lang="ru">
@@ -14,9 +14,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<div class="title-hero" style="background-image: url('/uploads/backgroundimg.jpg')">
+<div class="title-hero">
     <div class="title-hero-overlay"></div>
-
     <div class="title-hero-content">
         <div class="title-cover">
             <c:choose>
@@ -32,36 +31,34 @@
         <div class="title-info">
             <h1 class="title-name">${title.name}</h1>
             <div class="reading-status">
-                <label>Статус чтения:</label>
-                <div class="status-options">
-                    <label>
-                        <input type="radio" name="status" value="notReading" ${currentStatus == 'notReading' ? 'checked' : ''}>
-                        Не читаю
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="reading" ${currentStatus == 'reading' ? 'checked' : ''}>
-                        Читаю
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="planned" ${currentStatus == 'planned' ? 'checked' : ''}>
-                        В планах
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="completed" ${currentStatus == 'completed' ? 'checked' : ''}>
-                        Прочитано
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="dropped" ${currentStatus == 'dropped' ? 'checked' : ''}>
-                        Брошено
-                    </label>
-                    <label>
-                        <input type="radio" name="status" value="favorite" ${currentStatus == 'favorite' ? 'checked' : ''}>
-                        Любимое
-                    </label>
-                </div>
-                <button type="button" class="status-button" id="setStatusButton">Установить статус</button>
+                <label for="statusSelect">Статус чтения:</label>
+                <select id="statusSelect" name="status">
+                    <option value="NOT_READING" <c:if test="${currentStatus == 'NOT_READING'}">selected</c:if>>Не
+                        читаю
+                    </option>
+                    <option value="READING" <c:if test="${currentStatus == 'READING'}">selected</c:if>>Читаю</option>
+                    <option value="PLANNED" <c:if test="${currentStatus == 'PLANNED'}">selected</c:if>>В планах</option>
+                    <option value="COMPLETED" <c:if test="${currentStatus == 'COMPLETED'}">selected</c:if>>Прочитано
+                    </option>
+                    <option value="DROPPED" <c:if test="${currentStatus == 'DROPPED'}">selected</c:if>>Брошено</option>
+                    <option value="FAVORITE" <c:if test="${currentStatus == 'FAVORITE'}">selected</c:if>>Любимое
+                    </option>
+                </select>
+                <button id="setStatusButton">Установить статус</button>
             </div>
         </div>
+        <div class="rating-section">
+            <h3>Оцените этот тайтл:</h3>
+            <div class="stars" id="stars" data-title-id="${title.id}">
+                <span class="star" data-value="1">&#9734;</span>
+                <span class="star" data-value="2">&#9734;</span>
+                <span class="star" data-value="3">&#9734;</span>
+                <span class="star" data-value="4">&#9734;</span>
+                <span class="star" data-value="5">&#9734;</span>
+            </div>
+            <p>Средний рейтинг: <span id="averageRating">${title.averageRating}</span> из 5</p>
+        </div>
+
     </div>
 </div>
 
@@ -82,6 +79,9 @@
             <span class="genre-tag">${genre.name}</span>
         </c:forEach>
     </div>
+    <div class = "title-author">
+        <span class="author-tag">${title.author.name}</span>
+    </div>
 </div>
 
 <div class="tab-content" id="tab-chapters" style="display:none;">
@@ -89,49 +89,93 @@
 </div>
 
 <div class="tab-content" id="tab-comments" style="display:none;">
-    <h3>Комментарии</h3>
-    <form id="commentForm">
+    <form id="commentForm" class="comment-form">
         <textarea name="content" placeholder="Оставьте комментарий" required></textarea>
         <input type="hidden" name="titleId" value="${title.id}">
-        <input type="hidden" name="action" value="addComment"> <!-- Добавлено -->
+        <input type="hidden" name="action" value="addComment">
         <button type="submit">Отправить</button>
     </form>
     <div id="comments-section">
         <c:forEach var="comment" items="${comments}">
             <div class="comment">
-                <p>${comment.content}</p>
-                <small>${comment.createdAt}</small>
+                <div class="comment-header">
+                    <span class="username">${user.username}</span>
+                    <span class="comment-date">${comment.createdAt}</span>
+                </div>
+                <p class="comment-content">${comment.content}</p>
             </div>
         </c:forEach>
     </div>
 </div>
 
-<!-- Определяем titleId для использования в JavaScript -->
 <script>
     const titleId = '${title.id}';
-</script>
+    let status = null;
 
-<script>
-    document.querySelectorAll('.tab-link').forEach(link => {
-        link.addEventListener('click', function () {
-            document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-            this.classList.add('active');
-            document.getElementById(this.dataset.tab).style.display = 'block';
+    document.querySelectorAll('.comment-date').forEach(title => {
+        const maxLength = 16;
+        if (title.textContent.length > maxLength) {
+            title.textContent = title.textContent.substring(0, maxLength);
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const defaultTab = document.querySelector('.tab-link[data-tab="tab-overview"]');
+        if (defaultTab) {
+            defaultTab.classList.add('active');
+            document.getElementById('tab-overview').style.display = 'block';
+        }
+
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', function () {
+                document.querySelectorAll('.tab-link').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).style.display = 'block';
+            });
         });
     });
 
     document.getElementById('setStatusButton').addEventListener('click', function () {
-        const selectedStatus = document.querySelector('input[name="status"]:checked');
-        console.log('Selected status:', selectedStatus);
+        const statusSelect = document.getElementById('statusSelect');
+        const selectedStatus = statusSelect.value;
+
         if (!selectedStatus) {
             alert('Выберите статус.');
             return;
         }
 
-        var status = selectedStatus.value;
+        let statusEnum;
 
-        console.log(`Перед отправкой: titleId=${title.id}, status=${status}`); // Логируем для проверки
+        switch (selectedStatus) {
+            case 'NOT_READING':
+                statusEnum = 'NOT_READING';
+                break;
+            case 'READING':
+                statusEnum = 'READING';
+                break;
+            case 'PLANNED':
+                statusEnum = 'PLANNED';
+                break;
+            case 'COMPLETED':
+                statusEnum = 'COMPLETED';
+                break;
+            case 'DROPPED':
+                statusEnum = 'DROPPED';
+                break;
+            case 'FAVORITE':
+                statusEnum = 'FAVORITE';
+                break;
+            default:
+                alert('Неизвестный статус.');
+                console.error('Неизвестный статус:', selectedStatus);
+                return;
+        }
+
+        const params = new URLSearchParams();
+        params.append('action', 'updateStatus');
+        params.append('titleId', titleId);
+        params.append('status', statusEnum);
 
         fetch('/title', {
             method: 'POST',
@@ -139,20 +183,20 @@
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             credentials: 'same-origin',
-            body: `action=updateStatus&titleId=${title.id}&status=${status}`, // Здесь добавляем статус
+            body: params.toString(),
         })
             .then((response) => response.json())
-            .then(data => {
-                console.log('Ответ сервера:', data);
+            .then((data) => {
                 if (data.success) {
-                    alert('Статус обновлён!');
-                    document.getElementById('currentStatusDisplay').textContent = status;
+
+                    alert('Статус успешно обновлён!');
                 } else {
-                    alert(`Ошибка обновления статуса: ${data.message}`);
+                    alert(`Ошибка: ${data.message}`);
                 }
             })
-            .catch(err => console.error('Ошибка запроса:', err));
-
+            .catch((error) => {
+                console.error('Ошибка запроса:', error);
+            });
     });
 
     document.getElementById('commentForm').addEventListener('submit', function (e) {
@@ -168,32 +212,114 @@
         })
             .then(res => res.json())
             .then(data => {
-                console.log('Add comment response:', data); // Отладка
                 if (data.success) {
                     const commentsSection = document.getElementById('comments-section');
-                    const content = formData.get('content');
+                    const {username, createdAt, content } = data.comment;
 
-                    // Создаём новый элемент комментария
+                    const truncatedDate = createdAt.length > 16 ? createdAt.substring(0, 16) : createdAt;
+
                     const commentDiv = document.createElement('div');
                     commentDiv.classList.add('comment');
 
-                    const p = document.createElement('p');
-                    p.textContent = content;
+                    const commentHeader = document.createElement('div');
+                    commentHeader.classList.add('comment-header');
 
-                    const small = document.createElement('small');
-                    small.textContent = 'Только что';
+                    const usernameSpan = document.createElement('span');
+                    usernameSpan.classList.add('username');
+                    usernameSpan.textContent = username;
 
-                    commentDiv.appendChild(p);
-                    commentDiv.appendChild(small);
+                    const dateSpan = document.createElement('span');
+                    dateSpan.classList.add('comment-date');
+                    dateSpan.textContent = truncatedDate;
+
+                    const contentP = document.createElement('p');
+                    contentP.classList.add('comment-content');
+                    contentP.textContent = content;
+
+                    commentHeader.appendChild(usernameSpan);
+                    commentHeader.appendChild(dateSpan);
+                    commentDiv.appendChild(commentHeader);
+                    commentDiv.appendChild(contentP);
                     commentsSection.appendChild(commentDiv);
 
-                    console.log('Комментарий добавлен в DOM'); // Отладка
                     this.reset();
                 } else {
                     alert('Ошибка добавления комментария.');
                 }
             })
             .catch(err => console.error('Ошибка при добавлении комментария:', err));
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const starsContainer = document.getElementById('stars');
+        const stars = starsContainer.querySelectorAll('.star');
+        const averageRatingElement = document.getElementById("averageRating");
+        const titleId = starsContainer.getAttribute('data-title-id');
+        let userRating = ${userRating != null ? userRating : 'null'};
+
+        function highlightStars(rating) {
+            stars.forEach(star => {
+                if (parseInt(star.getAttribute('data-value')) <= rating) {
+                    star.classList.add('selected');
+                } else {
+                    star.classList.remove('selected');
+                }
+            });
+        }
+
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function () {
+                const rating = parseInt(this.getAttribute('data-value'));
+                highlightStars(rating);
+            });
+
+            star.addEventListener('mouseout', function () {
+                if (userRating) {
+                    highlightStars(userRating);
+                } else {
+                    stars.forEach(star => star.classList.remove('selected'));
+                }
+            });
+
+            star.addEventListener('click', function () {
+                const selectedRating = parseInt(this.getAttribute('data-value'));
+                sendRating(selectedRating);
+            });
+        });
+
+        function sendRating(rating) {
+            const params = new URLSearchParams();
+            params.append('action', 'addRating');
+            params.append('titleId', titleId);
+            params.append('rating', rating);
+
+            fetch('/title', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                credentials: 'same-origin',
+                body: params.toString(),
+            })
+                .then(response => {
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        throw new TypeError("Oops, мы ожидали JSON!");
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        averageRatingElement.textContent = data.averageRating.toFixed(1);
+                        userRating = rating;
+                        highlightStars(rating);
+                        alert("Спасибо за ваш рейтинг!");
+                    } else {
+                        alert("Ошибка: " + data.message);
+                    }
+                })
+        }
     });
 </script>
 </body>

@@ -1,5 +1,6 @@
 package ru.itis.services;
 
+import ru.itis.helper.ReadingStatus;
 import ru.itis.models.Genre;
 import ru.itis.models.Title;
 import java.util.List;
@@ -14,4 +15,5 @@ public interface TitleService {
     void updateGenresForTitle(Long titleId, List<Genre> genres);
 
     Optional<Title> getTitleById(Long id);
+    List<Title> getTitlesByUserAndStatus(Long userId, ReadingStatus status);
 }

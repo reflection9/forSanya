@@ -158,6 +158,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
             statement.setString(3, status);
             statement.executeUpdate();
 
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

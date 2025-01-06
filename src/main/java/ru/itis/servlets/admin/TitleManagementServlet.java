@@ -1,20 +1,15 @@
 package ru.itis.servlets.admin;
 
+import ru.itis.models.Chapter;
 import ru.itis.models.File;
 import ru.itis.models.Genre;
 import ru.itis.models.Title;
-import ru.itis.services.FileService;
-import ru.itis.services.GenreService;
-import ru.itis.services.TitleService;
-import ru.itis.services.AuthorService;
+import ru.itis.services.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +23,7 @@ public class TitleManagementServlet extends HttpServlet {
     private GenreService genreService;
     private AuthorService authorService;
     private FileService fileService;
+    private ChapterService chapterService;
 
     @Override
     public void init() throws ServletException {
@@ -35,6 +31,7 @@ public class TitleManagementServlet extends HttpServlet {
         genreService = (GenreService) getServletContext().getAttribute("genreService");
         authorService = (AuthorService) getServletContext().getAttribute("authorService");
         fileService = (FileService) getServletContext().getAttribute("fileService");
+        chapterService = (ChapterService) getServletContext().getAttribute("chapterService");
     }
 
     @Override
@@ -45,6 +42,9 @@ public class TitleManagementServlet extends HttpServlet {
             Optional<Title> editTitleOptional = titleService.getTitleById(titleId);
             if (editTitleOptional.isPresent()) {
                 req.setAttribute("editTitle", editTitleOptional.get());
+
+                List<Chapter> chapters = chapterService.findByTitleId(titleId);
+                req.setAttribute("chapters", chapters);
             } else {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Title not found");
                 return;
@@ -97,21 +97,17 @@ public class TitleManagementServlet extends HttpServlet {
     }
 
     private Title parseTitleFromRequest(HttpServletRequest req) {
-        Long titleId = Long.parseLong(req.getParameter("titleId"));
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         String type = req.getParameter("type");
         Long authorId = Long.parseLong(req.getParameter("authorId"));
         String[] genreIds = req.getParameterValues("genreIds");
-
         Title title = Title.builder()
-                .id(titleId)
                 .name(name)
                 .description(description)
                 .type(type)
                 .authorId(authorId)
                 .build();
-
         if (genreIds != null) {
             List<Genre> genres = new ArrayList<>();
             for (String genreId : genreIds) {

@@ -1,19 +1,26 @@
 package ru.itis.services.impl;
 
 import org.mindrot.jbcrypt.BCrypt;
+import ru.itis.helper.ReadingStatus;
 import ru.itis.models.User;
+import ru.itis.models.UserTitle;
 import ru.itis.repositories.UserRepository;
+import ru.itis.repositories.UserTitleRepository;
 import ru.itis.services.UserService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserTitleRepository userTitleRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserTitleRepository userTitleRepository) {
         this.userRepository = userRepository;
+        this.userTitleRepository = userTitleRepository;
     }
+
 
     @Override
     public void register(User user) {
@@ -55,6 +62,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Пользователь с ID " + id + " не найден"));
+    }
+
+    @Override
     public void deleteUser(Long id) {
         userRepository.removeById(id);
     }
@@ -64,14 +77,14 @@ public class UserServiceImpl implements UserService {
         userRepository.updateRole(userId, role);
     }
 
-    @Override
-    public void linkTitle(Long userId, Long titleId, String status) {
-        userRepository.linkTitle(userId, titleId, status);
+    public void linkTitle(Long userId, Long titleId, ReadingStatus status) {
+        userTitleRepository.save(userId,titleId,status);
     }
 
+
     @Override
-    public String getStatusByTitleIdAndUserId(Long titleId, Long userId) {
-        return userRepository.getStatusByTitleIdAndUserId(titleId, userId);
+    public ReadingStatus getStatusByTitleIdAndUserId(Long titleId, Long userId) {
+        return userTitleRepository.getStatus(userId, titleId);
     }
 }
 

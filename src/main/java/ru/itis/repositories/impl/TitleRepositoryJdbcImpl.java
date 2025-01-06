@@ -1,5 +1,6 @@
 package ru.itis.repositories.impl;
 
+import ru.itis.helper.ReadingStatus;
 import ru.itis.models.Author;
 import ru.itis.models.File;
 import ru.itis.models.Genre;
@@ -293,6 +294,48 @@ public class TitleRepositoryJdbcImpl implements TitleRepository {
             throw new RuntimeException("Ошибка при получении обложки для тайтла", e);
         }
         return null;
+    }
+
+    @Override
+    public List<Title> findTitlesByUserAndStatus(Long userId, ReadingStatus status) {
+        String query = "SELECT t.*, f.file_path " +
+                "FROM titles t " +
+                "LEFT JOIN files f ON t.id = f.title_id " +
+                "WHERE t.id IN (" +
+                "    SELECT title_id " +
+                "    FROM user_titles " +
+                "    WHERE user_id = ? AND status = ?" +
+                ")";
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, userId);
+            statement.setString(2, status.name());
+
+            ResultSet resultSet = statement.executeQuery();
+            List<Title> titles = new ArrayList<>();
+            while (resultSet.next()) {
+                Title title = new Title();
+                title.setId(resultSet.getLong("id"));
+                title.setName(resultSet.getString("name"));
+                title.setDescription(resultSet.getString("description"));
+                title.setType(resultSet.getString("type"));
+                title.setAuthorId(resultSet.getLong("author_id"));
+
+                List<File> files = new ArrayList<>();
+                String filePath = resultSet.getString("file_path");
+                if (filePath != null) {
+                    File file = new File();
+                    file.setFilePath(filePath);
+                    files.add(file);
+                }
+                title.setFiles(files);
+
+                titles.add(title);
+            }
+            return titles;
+        } catch (SQLException e) {
+            throw new RuntimeException("Ошибка при выполнении запроса: " + e.getMessage(), e);
+        }
     }
 
     private Title mapToTitle(ResultSet resultSet) throws SQLException {

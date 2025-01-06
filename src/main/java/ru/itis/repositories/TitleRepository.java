@@ -1,5 +1,6 @@
 package ru.itis.repositories;
 
+import ru.itis.helper.ReadingStatus;
 import ru.itis.models.Author;
 import ru.itis.models.File;
 import ru.itis.models.Genre;
@@ -24,4 +25,5 @@ public interface TitleRepository extends CrudRepository<Title> {
     void removeGenresFromTitle(Long titleId);
 
     File findCoverFileForTitle(Long titleId);
+    List<Title> findTitlesByUserAndStatus(Long userId, ReadingStatus status);
 }

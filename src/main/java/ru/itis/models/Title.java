@@ -19,4 +19,5 @@ public class Title {
     private Author author;
     private List<Genre> genres;
     private List<File> files;
+    private Double averageRating;
 }
